@@ -111,7 +111,7 @@ test(`example match_any`, function(t) {
 });
 
 test(`example array.filter`, function(t) {
-	const expressions = planckmatch.parse([
+	let expressions = planckmatch.parse([
 		`a.*`,
 		`*.html`
 	]);
@@ -123,4 +123,13 @@ test(`example array.filter`, function(t) {
 	t.deepEqual([ `a.css`, `b.html`, `c.js` ].filter(function(value) {
 		return planckmatch.match(value, expressions).includes(true);
 	}), [ `a.css`, `b.html` ]);
+	
+	expressions = planckmatch.parse([
+		`*`,
+		`!(*.css)`
+	], { extended: true });
+	
+	t.deepEqual([ `a.css`, `b.html`, `c.js` ].filter(function(value) {
+		return !planckmatch.match(value, expressions).includes(false);
+	}), [ `b.html`, `c.js` ]);
 });

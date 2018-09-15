@@ -16,37 +16,43 @@ $ npm install planckmatch
 
 ## Functions
 
-**planckmatch**
+**planckmatch(value, patterns, options)**
 
 Matches extended glob patterns with a given value.
+Returns: `Boolean` or `Array of Booleans`
+
 * `value`: A value to match to.
-  * Type: `String` or `Array of string`
+  * Type: `String` or `Array of strings`
   * Required: `true`
 * `patterns`: An extended glob pattern or array of extended glob patterns.
-  * Type: `String` or `Array of string`
+  * Type: `String` or `Array of strings`
   * Required: `true`
 * `options`: [Options](#options) for conversion of glob pattern to regular expression.
   * Type: `Object`
   * Default: `{}`
 
-**planckmatch.parse**
+**planckmatch.parse(patterns, options)**
 
 Parses extended glob patterns into regular expressions.
+Returns: `RegExp` or `Array of RegExps`
+
 * `patterns`: An extended glob pattern or array of extended glob patterns.
-  * Type: `String` or `Array of string`
+  * Type: `String` or `Array of strings`
   * Required: `true`
 * `options`: [Options](#options) for conversion of glob pattern to regular expression.
   * Type: `Object`
   * Default: `{}`
 
-**planckmatch.match**
+**planckmatch.match(value, expressions)**
 
 Matches regular expressions with a given value.
+Returns: `Boolean` or `Array of Booleans`
+
 * `value`: A value to match to.
-  * Type: `String` or `Array of string`
+  * Type: `String` or `Array of strings`
   * Required: `true`
 * `expressions`: A RegExp or array of RegExp used to match with.
-  * Type: `RegExp` or `Array of RegExp`
+  * Type: `RegExp` or `Array of RegExps`
   * Required: `true`
 
 ## Options
@@ -151,7 +157,7 @@ Use the module to filter an array.
 ```JavaScript
 const planckmatch = require(`planckmatch`);
 
-const expressions = planckmatch.parse([
+let expressions = planckmatch.parse([
   `a.*`,
   `*.html`
 ]);
@@ -165,15 +171,17 @@ const expressions = planckmatch.parse([
 [ `a.css`, `b.html`, `c.js` ].filter(function(value) {
   return planckmatch.match(value, expressions).includes(true);
 }); // [ `a.css`, `b.html` ]
+
+// Filter out any '.css' files.
+expressions = planckmatch.parse([
+  `*`,
+  `!(*.css)`
+], { extended: true });
+
+[ `a.css`, `b.html`, `c.js` ].filter(function(value) {
+  return !planckmatch.match(value, expressions).includes(false);
+}); // [ `b.html`, `c.js` ]
 ```
-
-## Quick glob overview
-
-* `*`: Matches any number of character, excluding not `/`.
-* `?`: Match any single character, excluding not `/`.
-* `**`: Matches any number of characters, including `/`.
-* `{}`: Group expression using a comma-separated list of patterns.
-* `!`: At the start of a pattern will negate the match.
 
 ## License
 
