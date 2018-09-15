@@ -1,0 +1,41 @@
+{
+  "author": {
+    "name": "Ron Dekker",
+    "url": "https://rondekker.nl"
+  },
+  "name": "planckmatch",
+  "version": "0.0.1",
+  "description": "Small and simple matching library using glob patterns.",
+  "license": "ISC",
+  "keywords": [
+    "extended",
+    "glob",
+    "patterns",
+    "multiple",
+    "matches",
+    "regexp",
+    "regular",
+    "expressions"
+  ],
+  "homepage": "https://github.com/redkenrok/planckmatch",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/redkenrok/planckmatch.git"
+  },
+  "bugs": {
+    "url": "https://github.com/redkenrok/planckmatch/issues"
+  },
+  "main": "index.js",
+  "scripts": {
+    "benchmark": "node benchmark.js",
+    "pretest": "eslint index.js test.js",
+    "test": "ava test.js --verbose"
+  },
+  "devDependencies": {
+    "ava": "^0.25.0",
+    "eslint": "^5.3.0"
+  },
+  "dependencies": {
+    "globrex": "^0.1.1"
+  }
+}

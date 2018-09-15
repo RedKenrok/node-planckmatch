@@ -1,0 +1,8 @@
+# Style
+.editorconfig
+.eslintrc.json
+# Continious integration
+.travis.yml
+test.js
+# Benchmarking
+benchmark.js
