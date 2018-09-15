@@ -19,33 +19,51 @@ $ npm install planckmatch
 **planckmatch**
 
 Matches extended glob patterns with a given value.
-* `value` **{String}**: A value to match to.
-* `patterns` **{String|array}**: An extended glob pattern or array of extended glob patterns.
-* `options` **{String|array}**: [Options](#options) for conversion of glob pattern to regular expression.
+* `value`: A value to match to.
+  * Type: `String` or `Array of string`
+  * Required: `true`
+* `patterns`: An extended glob pattern or array of extended glob patterns.
+  * Type: `String` or `Array of string`
+  * Required: `true`
+* `options`: [Options](#options) for conversion of glob pattern to regular expression.
+  * Type: `Object`
+  * Default: `{}`
 
 **planckmatch.parse**
 
 Parses extended glob patterns into regular expressions.
-* `patterns` **{String|array}**: An extended glob pattern or array of extended glob patterns.
-* `options` **{String|array}**: [Options](#options) for conversion of glob pattern to regular expression.
+* `patterns`: An extended glob pattern or array of extended glob patterns.
+  * Type: `String` or `Array of string`
+  * Required: `true`
+* `options`: [Options](#options) for conversion of glob pattern to regular expression.
+  * Type: `Object`
+  * Default: `{}`
 
 **planckmatch.match**
 
 Matches regular expressions with a given value.
-* `value` **{String}**: A value to match to.
-* `expressions` **{RegExp|array}**: A RegExp or array of RegExp used to match with.
+* `value`: A value to match to.
+  * Type: `String` or `Array of string`
+  * Required: `true`
+* `expressions`: A RegExp or array of RegExp used to match with.
+  * Type: `RegExp` or `Array of RegExp`
+  * Required: `true`
 
 ## Options
 
 Options for conversion of glob pattern to regular expression.
 
-* `options.extended` **{Boolean}**: Enable all advanced features from `extglob`.
+* `options.extended`: Enable all advanced features from `extglob`.
+  * Type: `Boolean`
   * Default: `false`
-* `options.globstar` **{Boolean}**: If `false` globs like `'/foo/*'` will match any string beginning with `'/foo/'`. If `true` the same `'/foo/*'` will match any string beginning with `'/foo/'` that does not have a `'/'` to the right of it, for example it will match: `'/foo/bar.txt'` but not `'/foo/bar/baz.txt'`.
+* `options.globstar`: If `false` globs like `'/foo/*'` will match any string beginning with `'/foo/'`. If `true` the same `'/foo/*'` will match any string beginning with `'/foo/'` that does not have a `'/'` to the right of it, for example it will match: `'/foo/bar.txt'` but not `'/foo/bar/baz.txt'`.
+  * Type: `Boolean`
   * Default: `false`
-* `options.strict` **{Boolean}**: Be forgiving about multiple slashes, like /// and make everything after the first / optional. This is how bash glob works.
+* `options.strict`: Be forgiving about multiple slashes, like /// and make everything after the first / optional. This is how bash glob works.
+  * Type: `Boolean`
   * Default: `false`
-* `options.flags` **{String}**: RegExp flags (e.g. `'i'` ) to pass to the RegExp constructor.
+* `options.flags`: RegExp flags (e.g. `'i'` ) to pass to the RegExp constructor.
+  * Type: `String`
   * Default: `''`
 
 ## Usage
