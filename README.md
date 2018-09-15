@@ -1,20 +1,8 @@
-<div style="text-align: center;">
-  <a title="Version master branch" href="https://github.com/redkenrok/node-planckmatch#readme" target="_blank" rel="noopener" style="color:#0000;">
-    <img src="https://img.shields.io/github/package-json/v/redkenrok/node-planckmatch.svg?label=master&style=flat-square"/>
-  </a>
-  <a title="Version npm package" href="https://npmjs.com/package/planckmatch" target="_blank" rel="noopener" style="color:#0000;">
-    <img src="https://img.shields.io/npm/v/planckmatch.svg?label=npm&style=flat-square"/>
-  </a>
-  <a title="License agreement" href="https://github.com/redkenrok/node-planckmatch/blob/master/LICENSE" target="_blank" rel="noopener" style="color:#0000;">
-    <img src="https://img.shields.io/github/license/redkenrok/node-planckmatch.svg?style=flat-square"/>
-  </a>
-  <a title="Travis-ci build status" href="https://travis-ci.org/RedKenrok/node-planckmatch" target="_blank" rel="noopener" style="color:#0000;">
-    <img src="https://img.shields.io/travis-ci/RedKenrok/node-planckmatch.svg?branch=master&style=flat-square"/>
-  </span>
-  <a title="Open issues on GitHub" href="https://github.com/redkenrok/node-planckmatch/issues" target="_blank" rel="noopener" style="color:#0000;">
-    <img src="https://img.shields.io/github/issues/redkenrok/node-planckmatch.svg?style=flat-square"/>
-  </a>
-</div>
+[![Version master branch](https://img.shields.io/github/package-json/v/redkenrok/node-planckmatch.svg?label=master&style=flat-square)](https://github.com/redkenrok/node-planckmatch#readme)
+[![Version npm package](https://img.shields.io/npm/v/planckmatch.svg?label=npm&style=flat-square)](https://npmjs.com/package/planckmatch)
+[![License agreement](https://img.shields.io/github/license/redkenrok/node-planckmatch.svg?style=flat-square)](https://github.com/redkenrok/node-planckmatch/blob/master/LICENSE)
+[![Travis-ci build status](https://img.shields.io/travis-ci/RedKenrok/node-planckmatch.svg?branch=master&style=flat-square)](https://travis-ci.org/redkenrok/node-planckmatch)
+[![Open issues on GitHub](https://img.shields.io/github/issues/redkenrok/node-planckmatch.svg?style=flat-square)](https://github.com/redkenrok/node-planckmatch/issues)
 
 # Planckmatch
 
