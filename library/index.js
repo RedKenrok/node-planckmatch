@@ -1,4 +1,6 @@
+// Node modules.
 const assert = require(`assert`);
+// Dependency modules.
 const globrex = require(`globrex`);
 
 /**

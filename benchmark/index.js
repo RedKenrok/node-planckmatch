@@ -1,12 +1,19 @@
 // Modules.
-const planckmatch = require(`.`);
+const planckmatch = require(`../library`);
+
+/**
+ * Log result.
+ * @param {*} time High resolution time span.
+ */
+const logResult = function(time) {
+	console.log(`  -> Done in ${(time[0] * 1e3 + time[1] / 1e6).toFixed(3)}ms.`);
+};
 
 // Patterns.
 const patterns = [
 	`**/*.css`,
 	`**/*.html`,
-	`**/*.js`,
-	`**/*.md`
+	`**/*.js`
 ];
 const pattern = patterns[0];
 // File paths.
@@ -18,16 +25,8 @@ for (let i = 0; i < fileCount; i++) {
 // Iteration count.
 const iterationCount = 1e3;
 
-/**
- * Log result.
- * @param {*} time High resolution time span.
- */
-const logResult = function(time) {
-	console.log(`  Done in ${(time[0] * 1e3 + time[1] / 1e6).toFixed(3)}ms.`);
-};
-
 // Provide benchmark context.
-console.log(`Planckmatch benchmark runs a ${iterationCount} times on a ${fileCount} files using the glob patterns: ${patterns}.`);
+console.log(`Planckmatch benchmark runs a ${iterationCount} times on a ${fileCount} files using the glob patterns: ${patterns.join(`, `)}.`);
 
 // High resolution time.
 let time;
