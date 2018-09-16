@@ -19,6 +19,7 @@ $ npm install planckmatch
 **planckmatch(value, patterns, options)**
 
 Matches extended glob patterns with a given value.
+
 Returns: `Boolean` or `Array of Booleans`
 
 * `value`: A value to match to.
@@ -34,6 +35,7 @@ Returns: `Boolean` or `Array of Booleans`
 **planckmatch.parse(patterns, options)**
 
 Parses extended glob patterns into regular expressions.
+
 Returns: `RegExp` or `Array of RegExps`
 
 * `patterns`: An extended glob pattern or array of extended glob patterns.
@@ -46,6 +48,7 @@ Returns: `RegExp` or `Array of RegExps`
 **planckmatch.match(value, expressions)**
 
 Matches regular expressions with a given value.
+
 Returns: `Boolean` or `Array of Booleans`
 
 * `value`: A value to match to.
