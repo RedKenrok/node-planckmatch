@@ -1,7 +1,7 @@
 [![Version npm package](https://img.shields.io/npm/v/planckmatch.svg?label=npm&style=flat-square)](https://npmjs.com/package/planckmatch)
 [![Version master branch](https://img.shields.io/github/package-json/v/redkenrok/node-planckmatch.svg?label=master&style=flat-square)](https://github.com/redkenrok/node-planckmatch#readme)
 [![License agreement](https://img.shields.io/github/license/redkenrok/node-planckmatch.svg?style=flat-square)](https://github.com/redkenrok/node-planckmatch/blob/master/LICENSE)
-[![Travis-ci build status](https://img.shields.io/travis-ci/RedKenrok/node-planckmatch.svg?label=travis&branch=master&style=flat-square)](https://travis-ci.org/redkenrok/node-planckmatch)
+[![Travis-ci build status](https://img.shields.io/travis-ci/RedKenrok/node-planckmatch.svg?label=travis&branch=master&style=flat-square)](https://travis-ci.org/RedKenrok/node-planckmatch)
 [![Open issues on GitHub](https://img.shields.io/github/issues/redkenrok/node-planckmatch.svg?style=flat-square)](https://github.com/redkenrok/node-planckmatch/issues)
 
 # Planckmatch
