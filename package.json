@@ -4,7 +4,7 @@
     "url": "https://rondekker.nl"
   },
   "name": "planckmatch",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Small and simple matching library using glob patterns.",
   "license": "ISC",
   "keywords": [
@@ -27,10 +27,10 @@
   },
   "main": "library/index.js",
   "files": [
-    "library/**/*"
+    "library/"
   ],
   "scripts": {
-    "benchmark": "node benchmark/index.js",
+    "benchmark": "node benchmark/dirty.js && node benchmark/optimized.js",
     "pretest": "eslint library/**/*.js test/**/*.js benchmark/**/*.js",
     "test": "ava test/**/*.js --verbose"
   },
