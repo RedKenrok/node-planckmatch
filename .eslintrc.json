@@ -10,10 +10,10 @@
     },
 		"root": true,
     "rules": {
-      "no-console": [
+      "no-case-declarations": [
         "off"
       ],
-      "no-case-declarations": [
+      "no-console": [
         "off"
       ],
       "indent": [

@@ -2,5 +2,3 @@
 .vscode/
 # Node
 node_modules/
-# JavaScript files directly in root of directory.
-*.js
