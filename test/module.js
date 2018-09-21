@@ -48,14 +48,6 @@ test(`index`, function(t) {
 	]), [ false, true ]);
 	
 	// Unix and windows test.
-	if (process.platform === `win32`) {
-		t.true(planckmatch(FILE_PATH_CSS_WINDOWS, PATTERN_FILE));
-		t.false(planckmatch(FILE_PATH_HTML_WINDOWS, PATTERN_FILE));
-	} else {
-		t.false(planckmatch(FILE_PATH_CSS_WINDOWS, PATTERN_FILE));
-		t.false(planckmatch(FILE_PATH_HTML_WINDOWS, PATTERN_FILE));
-	}
-	
 	t.true(planckmatch(FILE_PATH_CSS, PATTERN_FILE, undefined, false));
 	t.false(planckmatch(FILE_PATH_HTML, PATTERN_FILE, undefined, false));
 	
@@ -156,14 +148,6 @@ test(`match`, function(t) {
 	]), [ false, true ]);
 	
 	// Unix and windows test.
-	if (process.platform === `win32`) {
-		t.true(match(FILE_PATH_CSS_WINDOWS, EXPRESSION_FILE));
-		t.false(match(FILE_PATH_HTML_WINDOWS, EXPRESSION_FILE));
-	} else {
-		t.false(match(FILE_PATH_CSS_WINDOWS, EXPRESSION_FILE));
-		t.false(match(FILE_PATH_HTML_WINDOWS, EXPRESSION_FILE));
-	}
-	
 	t.true(match(FILE_PATH_CSS, EXPRESSION_FILE, undefined, false));
 	t.false(match(FILE_PATH_HTML, EXPRESSION_FILE, undefined, false));
 	
