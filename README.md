@@ -2,8 +2,9 @@
   
   [![npm package @latest](https://img.shields.io/npm/v/planckmatch.svg?label=npm@latest&style=flat-square&maxAge=3600)](https://npmjs.com/package/planckmatch)
   [![npm package @next](https://img.shields.io/npm/v/planckmatch/next.svg?label=npm@next&style=flat-square&maxAge=3600)](https://npmjs.com/package/planckmatch)
-  [![Travis-ci master branch](https://img.shields.io/travis-ci/RedKenrok/node-planckmatch.svg?label=travis/master&branch=master&style=flat-square&maxAge=3600)](https://travis-ci.org/RedKenrok/node-planckmatch)
   
+  [![Travis-ci master branch](https://img.shields.io/travis-ci/RedKenrok/node-planckmatch.svg?label=travis/master&branch=master&style=flat-square&maxAge=3600)](https://travis-ci.org/RedKenrok/node-planckmatch)
+    
   [![License agreement](https://img.shields.io/github/license/redkenrok/node-planckmatch.svg?style=flat-square&maxAge=86400)](https://github.com/redkenrok/node-planckmatch/blob/master/LICENSE)
   [![Open issues on GitHub](https://img.shields.io/github/issues/redkenrok/node-planckmatch.svg?style=flat-square&maxAge=86400)](https://github.com/redkenrok/node-planckmatch/issues)
   
@@ -65,7 +66,7 @@ Returns: `Boolean` or `Array of Booleans`
 * `expressions`: A RegExp or array of RegExp used to match with.
   * Type: `RegExp` or `Array of RegExps`
   * Required: `true`
-* `isWindows`: Whether the value uses Windows style back slashes (`\`) and needs to be converted to Unix style forward slashes (`/`). By default the module determines automatically whether to convert the value depending on the platform.
+* `isWindows`: Whether the value uses Windows style back slashes (`\`) and needs to be converted to Unix style forward slashes (`/`).
   * Type: `Boolean`
   * Default: `undefined`
 

@@ -5,6 +5,7 @@
 - Custom `toRegExp` function added to `library/parse.js`.
 - `match` function can now convert Windows style paths into Unix style paths with the `isWindows` argument.
 - More tests added for module testing and new self parsing method.
+- CodeCov coverage report added to CI workflow.
 ### Changed
 - Improved optimization when using arrays.
 - Improved benchmarks with shorter patterns.
