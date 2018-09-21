@@ -2,9 +2,9 @@
 const options = {
 	// Patterns.
 	patterns: [
-		`**/*.css`,
-		`**/*.html`,
-		`**/*.js`
+		`*.css`,
+		`*.html`,
+		`*.js`
 	],
 	// File paths.
 	fileCount: 1e3,

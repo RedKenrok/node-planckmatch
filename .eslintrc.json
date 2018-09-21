@@ -8,7 +8,7 @@
       "ecmaVersion": 2017,
       "sourceType": "module"
     },
-		"root": true,
+    "root": true,
     "rules": {
       "no-case-declarations": [
         "off"
@@ -18,7 +18,8 @@
       ],
       "indent": [
           "error",
-          "tab"
+          "tab",
+          { "SwitchCase": 1 }
       ],
       "linebreak-style": [
           "error",

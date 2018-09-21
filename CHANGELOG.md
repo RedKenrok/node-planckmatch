@@ -1,5 +1,16 @@
 # Changelog
 
+## 0.1.0-alpha.0 (2018-09-20)
+### Added
+- Custom `toRegExp` function added to `library/parse.js`.
+- `match` function can now convert Windows style paths into Unix style paths with the `isWindows` argument.
+- More tests added for module testing and new self parsing method.
+### Changed
+- Improved optimization when using arrays.
+- Improved benchmarks with shorter patterns.
+### Removed
+- `globrex` dependency removed.
+
 ## 0.0.3 (2018-09-18)
 ### Added
 - Simpler paths added for `library` files. Now you can use `planckmatch/parse` and `planckmatch/match` instead of `planckmatch/library/parse` and `planckmatch/library/match` respectively.

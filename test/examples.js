@@ -8,33 +8,21 @@ test(`basic`, function(t) {
 	t.false(planckmatch(`path/to/file.js`, `**/*.css`, { globstar: true }));
 });
 
-test(`multiple_patterns`, function(t) {
+test(`multiple patterns`, function(t) {
 	t.deepEqual(planckmatch(`path/to/file.css`, [
 		`**/*.css`,
 		`**/*.js`
 	], { globstar: true }), [ true, false ]);
 });
 
-test(`re-use_patterns`, function(t) {
+test(`re-use patterns`, function(t) {
 	const expression = planckmatch.parse(`**/*.css`, { globstar: true });
 	
 	t.true(planckmatch.match(`path/to/file.css`, expression));
 	t.false(planckmatch.match(`path/to/file.js`, expression));
 });
 
-test(`match_all`, function(t) {
-	t.false(!planckmatch(`path/to/file.css`, [
-		`path/*.css`,
-		`**/to/**/*`
-	], { globstar: true }).includes(false));
-	
-	t.true(!planckmatch(`path/to/file.css`, [
-		`**/*.css`,
-		`**/to/**/*`
-	], { globstar: true }).includes(false));
-});
-
-test(`match_any`, function(t) {
+test(`match any`, function(t) {
 	t.false(planckmatch(`path/to/file.css`, [
 		`path/*.css`,
 		`to/*`
@@ -51,7 +39,19 @@ test(`match_any`, function(t) {
 	], { globstar: true }).includes(true));
 });
 
-test(`array.filter`, function(t) {
+test(`match all`, function(t) {
+	t.false(!planckmatch(`path/to/file.css`, [
+		`path/*.css`,
+		`**/to/**/*`
+	], { globstar: true }).includes(false));
+	
+	t.true(!planckmatch(`path/to/file.css`, [
+		`**/*.css`,
+		`**/to/**/*`
+	], { globstar: true }).includes(false));
+});
+
+test(`filter array`, function(t) {
 	let expressions = planckmatch.parse([
 		`a.*`,
 		`*.html`

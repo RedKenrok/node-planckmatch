@@ -4,13 +4,15 @@
     "url": "https://rondekker.nl"
   },
   "name": "planckmatch",
-  "version": "0.0.3",
+  "version": "0.1.0-alpha.0",
   "description": "Small and simple matching library using glob patterns.",
   "license": "ISC",
   "keywords": [
     "extended",
     "glob",
     "patterns",
+    "wildcard",
+    "expansion",
     "multiple",
     "matches",
     "regexp",
@@ -34,9 +36,6 @@
     "benchmark": "node benchmark/dirty.js && node benchmark/optimized.js",
     "pretest": "eslint *.js library/**/*.js test/**/*.js benchmark/**/*.js",
     "test": "ava test/**/*.js --verbose"
-  },
-  "dependencies": {
-    "globrex": "^0.1.1"
   },
   "devDependencies": {
     "ava": "^0.25.0",

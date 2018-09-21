@@ -1,8 +1,12 @@
-[![Version npm package](https://img.shields.io/npm/v/planckmatch.svg?label=npm&style=flat-square)](https://npmjs.com/package/planckmatch)
-[![Version GitHub master branch](https://img.shields.io/github/package-json/v/redkenrok/node-planckmatch.svg?label=github&style=flat-square)](https://github.com/redkenrok/node-planckmatch#readme)
-[![License agreement](https://img.shields.io/github/license/redkenrok/node-planckmatch.svg?style=flat-square)](https://github.com/redkenrok/node-planckmatch/blob/master/LICENSE)
-[![Travis-ci build status](https://img.shields.io/travis-ci/RedKenrok/node-planckmatch.svg?label=travis&branch=master&style=flat-square)](https://travis-ci.org/RedKenrok/node-planckmatch)
-[![Open issues on GitHub](https://img.shields.io/github/issues/redkenrok/node-planckmatch.svg?style=flat-square)](https://github.com/redkenrok/node-planckmatch/issues)
+<div align="center">
+  
+  [![npm package @latest](https://img.shields.io/npm/v/planckmatch.svg?label=npm@latest&style=flat-square&maxAge=3600)](https://npmjs.com/package/planckmatch)
+  [![Travis-ci master branch](https://img.shields.io/travis-ci/RedKenrok/node-planckmatch.svg?label=travis/master&branch=master&style=flat-square&maxAge=3600)](https://travis-ci.org/RedKenrok/node-planckmatch)
+  
+  [![License agreement](https://img.shields.io/github/license/redkenrok/node-planckmatch.svg?style=flat-square&maxAge=86400)](https://github.com/redkenrok/node-planckmatch/blob/master/LICENSE)
+  [![Open issues on GitHub](https://img.shields.io/github/issues/redkenrok/node-planckmatch.svg?style=flat-square&maxAge=86400)](https://github.com/redkenrok/node-planckmatch/issues)
+  
+</div>
 
 # Planckmatch
 
@@ -31,6 +35,9 @@ Returns: `Boolean` or `Array of Booleans`
 * `options`: [Options](#options) for conversion of glob pattern to regular expression.
   * Type: `Object`
   * Default: `{}`
+* `isWindows`: Whether the value uses Windows style back slashes (`\`) and needs to be converted to Unix style forward slashes (`/`).
+  * Type: `Boolean`
+  * Default: `false`
 
 **planckmatch.parse(patterns, options)**
 
@@ -57,6 +64,9 @@ Returns: `Boolean` or `Array of Booleans`
 * `expressions`: A RegExp or array of RegExp used to match with.
   * Type: `RegExp` or `Array of RegExps`
   * Required: `true`
+* `isWindows`: Whether the value uses Windows style back slashes (`\`) and needs to be converted to Unix style forward slashes (`/`). By default the module determines automatically whether to convert the value depending on the platform.
+  * Type: `Boolean`
+  * Default: `undefined`
 
 ## Options
 
@@ -65,15 +75,15 @@ Options for conversion of glob pattern to regular expression.
 * `options.extended`: Enable all advanced features from `extglob`.
   * Type: `Boolean`
   * Default: `false`
-* `options.globstar`: If `false` globs like `'/foo/*'` will match any string beginning with `'/foo/'`. If `true` the same `'/foo/*'` will match any string beginning with `'/foo/'` that does not have a `'/'` to the right of it, for example it will match: `'/foo/bar.txt'` but not `'/foo/bar/baz.txt'`.
-  * Type: `Boolean`
-  * Default: `false`
-* `options.strict`: Be forgiving about multiple slashes, like /// and make everything after the first / optional. This is how bash glob works.
-  * Type: `Boolean`
-  * Default: `false`
 * `options.flags`: RegExp flags (e.g. `'i'` ) to pass to the RegExp constructor.
   * Type: `String`
   * Default: `''`
+* `options.globstar`: If `false` the pattern `'path/*'` will match any string beginning with `'path/'`, for example it will match `'path/file.txt'` and `'path/to/file.txt'`. If `true` the same `'path/*'` will match any string beginning with `'path/'` that does not have a `'/'` to the right of it, for example it will match `'path/file.txt'` but not `'path/to/file.txt'`. If `true` the pattern `'path/**'` will match any string beginning with `'path/'`, which is equal to the `'path/*'` with globstar set to false.
+  * Type: `Boolean`
+  * Default: `false`
+* `options.strict`: Be forgiving about multiple slashes, such as `///` and make everything after the first `/` optional. Like how bash glob works.
+  * Type: `Boolean`
+  * Default: `false`
 
 ## Usage
 
@@ -112,24 +122,6 @@ planckmatch.match(`path/to/file.css`, expression); // true
 planckmatch.match(`path/to/file.js`, expression); // false
 ```
 
-**Match all**
-
-Check if all patterns match.
-
-```JavaScript
-const planckmatch = require(`planckmatch`);
-
-!planckmatch(`path/to/file.css`, [
-  `path/*.css`,
-  `**/to/**/*`
-], { globstar: true }).includes(false); // false, since `path/*.css` does not match.
-
-!planckmatch(`path/to/file.css`, [
-  `**/*.css`,
-  `**/to/**/*`
-], { globstar: true }).includes(false); // true, since all patterns match.
-```
-
 **Match any**
 
 Check if any pattern matches.
@@ -153,7 +145,25 @@ planckmatch(`path/to/file.css`, [
 ], { globstar: true }).includes(true); // true, since both patterns match.
 ```
 
-**Array.filter**
+**Match all**
+
+Check if all patterns match.
+
+```JavaScript
+const planckmatch = require(`planckmatch`);
+
+!planckmatch(`path/to/file.css`, [
+  `path/*.css`,
+  `**/to/**/*`
+], { globstar: true }).includes(false); // false, since `path/*.css` does not match.
+
+!planckmatch(`path/to/file.css`, [
+  `**/*.css`,
+  `**/to/**/*`
+], { globstar: true }).includes(false); // true, since all patterns match.
+```
+
+**Filter array**
 
 Use the module to filter an array.
 

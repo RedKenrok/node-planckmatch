@@ -2,15 +2,28 @@
 const test = require(`ava`);
 // Custom module.
 const planckmatch = require(`../library`),
-	parse = require(`../library/parse`),
-	match = require(`../library/match`);
+	parse = require(`../parse`),
+	match = require(`../match`);
 
-const filePathCss = `path/to/file.css`,
-	filePathJs = `path/to/file.js`;
-const patternStar = `**/*.css`,
-	patternFile = `**/file.css`;
-const expressionStar = /^((?:[^/]*(?:\/|$))*)([^/]*)\.css$/,
-	expressionFile = /^((?:[^/]*(?:\/|$))*)file\.css$/;
+// Options.
+const GLOBSTAR_FALSE = { globstar: false },
+	GLOBSTAR_TRUE = { globstar: true };
+// File paths.
+const FILE_PATH_CSS = `path/to/file.css`,
+	FILE_PATH_HTML = `path/file.html`;
+const FILE_PATH_CSS_WINDOWS = `path\\to\\file.css`,
+	FILE_PATH_HTML_WINDOWS = `path\\file.html`;
+// Glob patterns.
+const PATTERN_FILE = `path/to/*.css`,
+	PATTERN_SINGLE = `path/*`,
+	PATTERN_DOUBLE = `path/**`;
+// Regular expressions.
+const EXPRESSION_FILE = /^path\/to\/.*\.css$/,
+	EXPRESSION_FILE_GLOBSTAR = /^path\/to\/([^/]*)\.css$/,
+	EXPRESSION_SINGLE = /^path\/.*$/,
+	EXPRESSION_SINGLE_GLOBSTAR = /^path\/([^/]*)$/,
+	EXPRESSION_DOUBLE = /^path\/.*$/,
+	EXPRESSION_DOUBLE_GLOBSTAR = /^path\/((?:[^/]*(?:\/|$))*)$/;
 
 test(`index`, function(t) {
 	// Module properties and types.
@@ -20,19 +33,59 @@ test(`index`, function(t) {
 	t.is(planckmatch.match, match);
 	t.is(typeof(planckmatch.match), `function`);
 	
-	// Patterns as a string.
-	t.true(planckmatch(filePathCss, patternStar, { globstar: true }));
-	t.false(planckmatch(filePathJs, patternStar, { globstar: true }));
+	// Pattern as string.
+	t.true(planckmatch(FILE_PATH_CSS, PATTERN_FILE));
+	t.false(planckmatch(FILE_PATH_HTML, PATTERN_FILE));
 	
 	// Patterns as an array.
-	t.deepEqual(planckmatch(filePathCss, [
-		patternStar,
-		patternFile
-	], { globstar: true }), [ true, true ]);
-	t.deepEqual(planckmatch(filePathJs, [
-		patternStar,
-		patternFile
-	], { globstar: true }), [ false, false ]);
+	t.deepEqual(planckmatch(FILE_PATH_CSS, [
+		PATTERN_FILE,
+		PATTERN_SINGLE
+	]), [ true, true ]);
+	t.deepEqual(planckmatch(FILE_PATH_HTML, [
+		PATTERN_FILE,
+		PATTERN_SINGLE
+	]), [ false, true ]);
+	
+	// Unix and windows test.
+	if (process.platform === `win32`) {
+		t.true(planckmatch(FILE_PATH_CSS_WINDOWS, PATTERN_FILE));
+		t.false(planckmatch(FILE_PATH_HTML_WINDOWS, PATTERN_FILE));
+	} else {
+		t.false(planckmatch(FILE_PATH_CSS_WINDOWS, PATTERN_FILE));
+		t.false(planckmatch(FILE_PATH_HTML_WINDOWS, PATTERN_FILE));
+	}
+	
+	t.true(planckmatch(FILE_PATH_CSS, PATTERN_FILE, undefined, false));
+	t.false(planckmatch(FILE_PATH_HTML, PATTERN_FILE, undefined, false));
+	
+	t.true(planckmatch(FILE_PATH_CSS, PATTERN_FILE, undefined, true));
+	t.false(planckmatch(FILE_PATH_HTML, PATTERN_FILE, undefined, true));
+	
+	t.false(planckmatch(FILE_PATH_CSS_WINDOWS, PATTERN_FILE, undefined, false));
+	t.false(planckmatch(FILE_PATH_HTML_WINDOWS, PATTERN_FILE, undefined, false));
+	
+	t.true(planckmatch(FILE_PATH_CSS_WINDOWS, PATTERN_FILE, undefined, true));
+	t.false(planckmatch(FILE_PATH_HTML_WINDOWS, PATTERN_FILE, undefined, true));
+	
+	// Options.
+	t.true(planckmatch(FILE_PATH_CSS, PATTERN_SINGLE));
+	t.true(planckmatch(FILE_PATH_HTML, PATTERN_SINGLE));
+	
+	t.true(planckmatch(FILE_PATH_CSS, PATTERN_SINGLE, GLOBSTAR_FALSE));
+	t.true(planckmatch(FILE_PATH_HTML, PATTERN_SINGLE, GLOBSTAR_FALSE));
+	
+	t.false(planckmatch(FILE_PATH_CSS, PATTERN_SINGLE, GLOBSTAR_TRUE));
+	t.true(planckmatch(FILE_PATH_HTML, PATTERN_SINGLE, GLOBSTAR_TRUE));
+	
+	t.true(planckmatch(FILE_PATH_CSS, PATTERN_DOUBLE));
+	t.true(planckmatch(FILE_PATH_HTML, PATTERN_DOUBLE));
+	
+	t.true(planckmatch(FILE_PATH_CSS, PATTERN_DOUBLE, GLOBSTAR_FALSE));
+	t.true(planckmatch(FILE_PATH_HTML, PATTERN_DOUBLE, GLOBSTAR_FALSE));
+	
+	t.true(planckmatch(FILE_PATH_CSS, PATTERN_DOUBLE, GLOBSTAR_TRUE));
+	t.true(planckmatch(FILE_PATH_HTML, PATTERN_DOUBLE, GLOBSTAR_TRUE));
 });
 
 test(`parse`, function(t) {
@@ -40,15 +93,36 @@ test(`parse`, function(t) {
 	t.is(typeof(parse), `function`);
 	
 	// Patterns as a string.
-	t.deepEqual(parse(patternStar, { globstar: true }), expressionStar);
+	t.deepEqual(parse(PATTERN_FILE), EXPRESSION_FILE);
+	t.deepEqual(parse(PATTERN_FILE, GLOBSTAR_FALSE), EXPRESSION_FILE);
+	t.deepEqual(parse(PATTERN_FILE, GLOBSTAR_TRUE), EXPRESSION_FILE_GLOBSTAR);
+	
+	t.deepEqual(parse(PATTERN_SINGLE), EXPRESSION_SINGLE);
+	t.deepEqual(parse(PATTERN_SINGLE, GLOBSTAR_FALSE), EXPRESSION_SINGLE);
+	t.deepEqual(parse(PATTERN_SINGLE, GLOBSTAR_TRUE), EXPRESSION_SINGLE_GLOBSTAR);
+	
+	t.deepEqual(parse(PATTERN_DOUBLE), EXPRESSION_DOUBLE);
+	t.deepEqual(parse(PATTERN_DOUBLE, GLOBSTAR_FALSE), EXPRESSION_DOUBLE);
+	t.deepEqual(parse(PATTERN_DOUBLE, GLOBSTAR_TRUE), EXPRESSION_DOUBLE_GLOBSTAR);
 	
 	// Patterns as an array.
 	t.deepEqual(parse([
-		patternStar,
-		patternFile
-	], { globstar: true }), [
-		expressionStar,
-		expressionFile
+		PATTERN_FILE,
+		PATTERN_SINGLE,
+		PATTERN_DOUBLE
+	], GLOBSTAR_FALSE), [
+		EXPRESSION_FILE,
+		EXPRESSION_SINGLE,
+		EXPRESSION_DOUBLE
+	]);
+	t.deepEqual(parse([
+		PATTERN_FILE,
+		PATTERN_SINGLE,
+		PATTERN_DOUBLE
+	], GLOBSTAR_TRUE), [
+		EXPRESSION_FILE_GLOBSTAR,
+		EXPRESSION_SINGLE_GLOBSTAR,
+		EXPRESSION_DOUBLE_GLOBSTAR
 	]);
 });
 
@@ -56,17 +130,49 @@ test(`match`, function(t) {
 	// Type.
 	t.is(typeof(match), `function`);
 	
-	// Expressions as a string.
-	t.true(match(filePathCss, expressionStar));
-	t.false(match(filePathJs, expressionStar));
+	// Expressions as RegExp.
+	t.true(match(FILE_PATH_CSS, EXPRESSION_FILE));
+	t.true(match(FILE_PATH_CSS, EXPRESSION_FILE_GLOBSTAR));
+	t.true(match(FILE_PATH_CSS, EXPRESSION_SINGLE));
+	t.false(match(FILE_PATH_CSS, EXPRESSION_SINGLE_GLOBSTAR));
+	t.true(match(FILE_PATH_CSS, EXPRESSION_DOUBLE));
+	t.true(match(FILE_PATH_CSS, EXPRESSION_DOUBLE_GLOBSTAR));
+	
+	t.false(match(FILE_PATH_HTML, EXPRESSION_FILE));
+	t.false(match(FILE_PATH_HTML, EXPRESSION_FILE_GLOBSTAR));
+	t.true(match(FILE_PATH_HTML, EXPRESSION_SINGLE));
+	t.true(match(FILE_PATH_HTML, EXPRESSION_SINGLE_GLOBSTAR));
+	t.true(match(FILE_PATH_HTML, EXPRESSION_DOUBLE));
+	t.true(match(FILE_PATH_HTML, EXPRESSION_DOUBLE_GLOBSTAR));
 	
 	// Expressions as an array.
-	t.deepEqual(match(filePathCss, [
-		expressionStar,
-		expressionFile
-	]), [ true, true ]);
-	t.deepEqual(match(filePathJs, [
-		expressionStar,
-		expressionFile
-	]), [ false, false ]);
+	t.deepEqual(match(FILE_PATH_CSS, [
+		EXPRESSION_FILE,
+		EXPRESSION_SINGLE_GLOBSTAR
+	]), [ true, false ]);
+	t.deepEqual(match(FILE_PATH_HTML, [
+		EXPRESSION_FILE,
+		EXPRESSION_SINGLE_GLOBSTAR
+	]), [ false, true ]);
+	
+	// Unix and windows test.
+	if (process.platform === `win32`) {
+		t.true(match(FILE_PATH_CSS_WINDOWS, EXPRESSION_FILE));
+		t.false(match(FILE_PATH_HTML_WINDOWS, EXPRESSION_FILE));
+	} else {
+		t.false(match(FILE_PATH_CSS_WINDOWS, EXPRESSION_FILE));
+		t.false(match(FILE_PATH_HTML_WINDOWS, EXPRESSION_FILE));
+	}
+	
+	t.true(match(FILE_PATH_CSS, EXPRESSION_FILE, undefined, false));
+	t.false(match(FILE_PATH_HTML, EXPRESSION_FILE, undefined, false));
+	
+	t.true(match(FILE_PATH_CSS, EXPRESSION_FILE, undefined, true));
+	t.false(match(FILE_PATH_HTML, EXPRESSION_FILE, undefined, true));
+	
+	t.true(match(FILE_PATH_CSS_WINDOWS, EXPRESSION_FILE, undefined, false));
+	t.false(match(FILE_PATH_HTML_WINDOWS, EXPRESSION_FILE, undefined, false));
+	
+	t.true(match(FILE_PATH_CSS_WINDOWS, EXPRESSION_FILE, undefined, true));
+	t.false(match(FILE_PATH_HTML_WINDOWS, EXPRESSION_FILE, undefined, true));
 });
