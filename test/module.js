@@ -148,15 +148,15 @@ test(`match`, function(t) {
 	]), [ false, true ]);
 	
 	// Unix and windows test.
-	t.true(match(FILE_PATH_CSS, EXPRESSION_FILE, undefined, false));
-	t.false(match(FILE_PATH_HTML, EXPRESSION_FILE, undefined, false));
+	t.true(match(FILE_PATH_CSS, EXPRESSION_FILE, false));
+	t.false(match(FILE_PATH_HTML, EXPRESSION_FILE, false));
 	
-	t.true(match(FILE_PATH_CSS, EXPRESSION_FILE, undefined, true));
-	t.false(match(FILE_PATH_HTML, EXPRESSION_FILE, undefined, true));
+	t.true(match(FILE_PATH_CSS, EXPRESSION_FILE, true));
+	t.false(match(FILE_PATH_HTML, EXPRESSION_FILE, true));
 	
-	t.true(match(FILE_PATH_CSS_WINDOWS, EXPRESSION_FILE, undefined, false));
-	t.false(match(FILE_PATH_HTML_WINDOWS, EXPRESSION_FILE, undefined, false));
+	t.false(match(FILE_PATH_CSS_WINDOWS, EXPRESSION_FILE, false));
+	t.false(match(FILE_PATH_HTML_WINDOWS, EXPRESSION_FILE, false));
 	
-	t.true(match(FILE_PATH_CSS_WINDOWS, EXPRESSION_FILE, undefined, true));
-	t.false(match(FILE_PATH_HTML_WINDOWS, EXPRESSION_FILE, undefined, true));
+	t.true(match(FILE_PATH_CSS_WINDOWS, EXPRESSION_FILE, true));
+	t.false(match(FILE_PATH_HTML_WINDOWS, EXPRESSION_FILE, true));
 });
