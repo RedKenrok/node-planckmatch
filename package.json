@@ -34,11 +34,13 @@
   ],
   "scripts": {
     "benchmark": "node benchmark/dirty.js && node benchmark/optimized.js",
+    "coverage": "nyc report --reporter=text-lcov > coverage.lcov && codecov",
     "pretest": "eslint *.js library/**/*.js test/**/*.js benchmark/**/*.js",
-    "test": "ava test/**/*.js --verbose"
+    "test": "nyc --reporter=text ava test/**/*.js --verbose"
   },
   "devDependencies": {
     "ava": "^0.25.0",
-    "eslint": "^5.3.0"
+    "eslint": "^5.3.0",
+    "nyc": "^13.0.1"
   }
 }
