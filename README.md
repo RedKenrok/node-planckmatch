@@ -1,6 +1,7 @@
 <div align="center">
   
   [![npm package @latest](https://img.shields.io/npm/v/planckmatch.svg?label=npm@latest&style=flat-square&maxAge=3600)](https://npmjs.com/package/planckmatch)
+  [![npm package @next](https://img.shields.io/npm/v/planckmatch/next.svg?label=npm@next&style=flat-square&maxAge=3600)](https://npmjs.com/package/planckmatch)
   [![Travis-ci master branch](https://img.shields.io/travis-ci/RedKenrok/node-planckmatch.svg?label=travis/master&branch=master&style=flat-square&maxAge=3600)](https://travis-ci.org/RedKenrok/node-planckmatch)
   
   [![License agreement](https://img.shields.io/github/license/redkenrok/node-planckmatch.svg?style=flat-square&maxAge=86400)](https://github.com/redkenrok/node-planckmatch/blob/master/LICENSE)
