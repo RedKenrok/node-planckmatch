@@ -68,10 +68,18 @@ test(`index`, function(t) {
 	
 	// Unix and windows paths.
 	t.true(planckmatch(FILE_PATH_CSS, PATTERN_DOUBLE, GLOBSTAR_TRUE, false));
-	t.false(planckmatch(FILE_PATH_CSS, PATTERN_DOUBLE, GLOBSTAR_TRUE, true));
+	if (process.platform === `win32`) {
+		t.false(planckmatch(FILE_PATH_CSS, PATTERN_DOUBLE, GLOBSTAR_TRUE, true));
+	} else {
+		t.true(planckmatch(FILE_PATH_CSS, PATTERN_DOUBLE, GLOBSTAR_TRUE, true));
+	}
 	
 	t.false(planckmatch(FILE_PATH_CSS_WINDOWS, PATTERN_DOUBLE, GLOBSTAR_TRUE, false));
-	t.true(planckmatch(FILE_PATH_CSS_WINDOWS, PATTERN_DOUBLE, GLOBSTAR_TRUE, true));
+	if (process.platform === `win32`) {
+		t.true(planckmatch(FILE_PATH_CSS_WINDOWS, PATTERN_DOUBLE, GLOBSTAR_TRUE, true));
+	} else {
+		t.false(planckmatch(FILE_PATH_CSS_WINDOWS, PATTERN_DOUBLE, GLOBSTAR_TRUE, true));
+	}
 });
 
 test(`parse`, function(t) {
@@ -119,7 +127,11 @@ test(`parse`, function(t) {
 	t.notDeepEqual(parse(PATTERN_DOUBLE, GLOBSTAR_TRUE, false), EXPRESSION_DOUBLE_WINDOWS);
 	
 	t.notDeepEqual(parse(PATTERN_DOUBLE, GLOBSTAR_TRUE, true), EXPRESSION_DOUBLE_GLOBSTAR);
-	t.deepEqual(parse(PATTERN_DOUBLE, GLOBSTAR_TRUE, true), EXPRESSION_DOUBLE_WINDOWS);
+	if (process.platform === `win32`) {
+		t.deepEqual(parse(PATTERN_DOUBLE, GLOBSTAR_TRUE, true), EXPRESSION_DOUBLE_WINDOWS);
+	} else {
+		t.notDeepEqual(parse(PATTERN_DOUBLE, GLOBSTAR_TRUE, true), EXPRESSION_DOUBLE_WINDOWS);
+	}
 });
 
 test(`match`, function(t) {
