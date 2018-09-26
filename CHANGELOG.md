@@ -1,6 +1,10 @@
 # Changelog
 
-## 0.1.0 (Unreleased)
+## 0.1.1 (2018-09-26)
+### Fixed
+- Issue where the `!` would not negate properly when `extended` set to `true`.
+
+## 0.1.0 (2018-09-26)
 ### Added
 - Custom `toRegExp` function added to `library/parse.js`.
 - `parse` function can now create expression to match Windows style paths using the `path` parameter.
