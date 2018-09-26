@@ -10,20 +10,20 @@ const GLOBSTAR_FALSE = { globstar: false },
 	GLOBSTAR_TRUE = { globstar: true };
 // File paths.
 const FILE_PATH_CSS = `path/to/file.css`,
-	FILE_PATH_HTML = `path/file.html`;
-const FILE_PATH_CSS_WINDOWS = `path\\to\\file.css`,
-	FILE_PATH_HTML_WINDOWS = `path\\file.html`;
+	FILE_PATH_CSS_WINDOWS = `path\\to\\file.css`;
+const FILE_PATH_HTML = `path/file.html`;
 // Glob patterns.
 const PATTERN_FILE = `path/to/*.css`,
 	PATTERN_SINGLE = `path/*`,
 	PATTERN_DOUBLE = `path/**`;
 // Regular expressions.
 const EXPRESSION_FILE = /^path\/to\/.*\.css$/,
-	EXPRESSION_FILE_GLOBSTAR = /^path\/to\/([^/]*)\.css$/,
-	EXPRESSION_SINGLE = /^path\/.*$/,
-	EXPRESSION_SINGLE_GLOBSTAR = /^path\/([^/]*)$/,
-	EXPRESSION_DOUBLE = /^path\/.*$/,
+	EXPRESSION_FILE_GLOBSTAR = /^path\/to\/([^/]*)\.css$/;
+const EXPRESSION_SINGLE = /^path\/.*$/,
+	EXPRESSION_SINGLE_GLOBSTAR = /^path\/([^/]*)$/;
+const EXPRESSION_DOUBLE = /^path\/.*$/,
 	EXPRESSION_DOUBLE_GLOBSTAR = /^path\/((?:[^/]*(?:\/|$))*)$/;
+const EXPRESSION_DOUBLE_WINDOWS = /^path\\((?:[^\\]*(?:\\|$))*)$/;
 
 test(`index`, function(t) {
 	// Module properties and types.
@@ -47,19 +47,6 @@ test(`index`, function(t) {
 		PATTERN_SINGLE
 	]), [ false, true ]);
 	
-	// Unix and windows test.
-	t.true(planckmatch(FILE_PATH_CSS, PATTERN_FILE, undefined, false));
-	t.false(planckmatch(FILE_PATH_HTML, PATTERN_FILE, undefined, false));
-	
-	t.true(planckmatch(FILE_PATH_CSS, PATTERN_FILE, undefined, true));
-	t.false(planckmatch(FILE_PATH_HTML, PATTERN_FILE, undefined, true));
-	
-	t.false(planckmatch(FILE_PATH_CSS_WINDOWS, PATTERN_FILE, undefined, false));
-	t.false(planckmatch(FILE_PATH_HTML_WINDOWS, PATTERN_FILE, undefined, false));
-	
-	t.true(planckmatch(FILE_PATH_CSS_WINDOWS, PATTERN_FILE, undefined, true));
-	t.false(planckmatch(FILE_PATH_HTML_WINDOWS, PATTERN_FILE, undefined, true));
-	
 	// Options.
 	t.true(planckmatch(FILE_PATH_CSS, PATTERN_SINGLE));
 	t.true(planckmatch(FILE_PATH_HTML, PATTERN_SINGLE));
@@ -78,6 +65,13 @@ test(`index`, function(t) {
 	
 	t.true(planckmatch(FILE_PATH_CSS, PATTERN_DOUBLE, GLOBSTAR_TRUE));
 	t.true(planckmatch(FILE_PATH_HTML, PATTERN_DOUBLE, GLOBSTAR_TRUE));
+	
+	// Unix and windows paths.
+	t.true(planckmatch(FILE_PATH_CSS, PATTERN_DOUBLE, GLOBSTAR_TRUE, false));
+	t.false(planckmatch(FILE_PATH_CSS, PATTERN_DOUBLE, GLOBSTAR_TRUE, true));
+	
+	t.false(planckmatch(FILE_PATH_CSS_WINDOWS, PATTERN_DOUBLE, GLOBSTAR_TRUE, false));
+	t.true(planckmatch(FILE_PATH_CSS_WINDOWS, PATTERN_DOUBLE, GLOBSTAR_TRUE, true));
 });
 
 test(`parse`, function(t) {
@@ -116,6 +110,16 @@ test(`parse`, function(t) {
 		EXPRESSION_SINGLE_GLOBSTAR,
 		EXPRESSION_DOUBLE_GLOBSTAR
 	]);
+	
+	// Unix and windows paths.
+	t.deepEqual(parse(PATTERN_DOUBLE, GLOBSTAR_TRUE), EXPRESSION_DOUBLE_GLOBSTAR);
+	t.notDeepEqual(parse(PATTERN_DOUBLE, GLOBSTAR_TRUE), EXPRESSION_DOUBLE_WINDOWS);
+	
+	t.deepEqual(parse(PATTERN_DOUBLE, GLOBSTAR_TRUE, false), EXPRESSION_DOUBLE_GLOBSTAR);
+	t.notDeepEqual(parse(PATTERN_DOUBLE, GLOBSTAR_TRUE, false), EXPRESSION_DOUBLE_WINDOWS);
+	
+	t.notDeepEqual(parse(PATTERN_DOUBLE, GLOBSTAR_TRUE, true), EXPRESSION_DOUBLE_GLOBSTAR);
+	t.deepEqual(parse(PATTERN_DOUBLE, GLOBSTAR_TRUE, true), EXPRESSION_DOUBLE_WINDOWS);
 });
 
 test(`match`, function(t) {
@@ -147,16 +151,10 @@ test(`match`, function(t) {
 		EXPRESSION_SINGLE_GLOBSTAR
 	]), [ false, true ]);
 	
-	// Unix and windows test.
-	t.true(match(FILE_PATH_CSS, EXPRESSION_FILE, false));
-	t.false(match(FILE_PATH_HTML, EXPRESSION_FILE, false));
+	// Unix and windows paths.
+	t.true(match(FILE_PATH_CSS, EXPRESSION_DOUBLE));
+	t.false(match(FILE_PATH_CSS, EXPRESSION_DOUBLE_WINDOWS));
 	
-	t.true(match(FILE_PATH_CSS, EXPRESSION_FILE, true));
-	t.false(match(FILE_PATH_HTML, EXPRESSION_FILE, true));
-	
-	t.false(match(FILE_PATH_CSS_WINDOWS, EXPRESSION_FILE, false));
-	t.false(match(FILE_PATH_HTML_WINDOWS, EXPRESSION_FILE, false));
-	
-	t.true(match(FILE_PATH_CSS_WINDOWS, EXPRESSION_FILE, true));
-	t.false(match(FILE_PATH_HTML_WINDOWS, EXPRESSION_FILE, true));
+	t.false(match(FILE_PATH_CSS_WINDOWS, EXPRESSION_DOUBLE));
+	t.true(match(FILE_PATH_CSS_WINDOWS, EXPRESSION_DOUBLE_WINDOWS));
 });

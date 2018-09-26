@@ -1,8 +1,12 @@
 // Node modules.
 const assert = require(`assert`);
+const isWin = process.platform === `win32`;
+const SEP = isWin ? `\\\\` : `/`;
 // Regular expression segments.
-const GLOBSTAR = `((?:[^/]*(?:/|$))*)`;
-const WILDCARD = `([^/]*)`;
+const GLOBSTAR = `((?:[^/]*(?:/|$))*)`,
+	WILDCARD = `([^/]*)`;
+const GLOBSTAR_PATH = `((?:[^${SEP}]*(?:${SEP}|$))*)`,
+	WILDCARD_PATH = `([^${SEP}]*)`;
 
 /**
  * Validate the given options types.
@@ -36,9 +40,10 @@ const validateOptions = function(options) {
  * @param {String} options.flags Any regular expressions flags.
  * @param {Boolean} options.globstar Whether to accept multiple glob stars.
  * @param {Boolean} options.strict Whether to be strict on forwards slashes.
+ * @param {Boolean} path Whether it should adapt the pattern to match paths.
  * @returns {RegExp} Pattern as regular expressions.
  */
-const toRegExp = function(pattern, { extended = false, flags = ``, globstar = false, strict = false } = {}) {
+const toRegExp = function(pattern, { extended = false, flags = ``, globstar = false, strict = false } = {}, path = false) {
 	// Empty expression to concatenate onto.
 	let expression = ``;
 	
@@ -81,7 +86,7 @@ const toRegExp = function(pattern, { extended = false, flags = ``, globstar = fa
 					if (type === `@`) {
 						expression += `{1}`;
 					} else if (type === `!`) {
-						expression += WILDCARD;
+						expression += path ? WILDCARD_PATH : WILDCARD;
 					} else {
 						expression += type;
 					}
@@ -117,7 +122,7 @@ const toRegExp = function(pattern, { extended = false, flags = ``, globstar = fa
 				continue;
 			
 			case `/`:
-				expression += `\\${c}`;
+				expression += path && isWin ? SEP : `\\${c}`;
 				if (n === `/` && !strict) {
 					expression += `?`;
 				}
@@ -211,12 +216,12 @@ const toRegExp = function(pattern, { extended = false, flags = ``, globstar = fa
 				if (!globstar) {
 					// Count as a single asterisks.
 					expression += `.*`;
-				} else if (starCount > 1 && (p === undefined || p === `/`) && (n === undefined || n === `/`)) {
-					expression += GLOBSTAR;
+				} else if (starCount > 1 && (p === undefined || p === `/` || p === `\\`) && (n === undefined || n === `/` || n === `\\`)) {
+					expression += path ? GLOBSTAR_PATH : GLOBSTAR;
 					// Skip the next forwards slash.
 					i++;
 				} else {
-					expression += WILDCARD;
+					expression += path ? WILDCARD_PATH : WILDCARD;
 				}
 				continue;
 		}
@@ -242,25 +247,29 @@ const toRegExp = function(pattern, { extended = false, flags = ``, globstar = fa
  * Parses extended glob patterns into regular expressions.
  * @param {String|Array} patterns An extended glob pattern or array of extended glob patterns.
  * @param {Object} options Glob pattern to regular expression options.
+ * @param {Boolean} path Whether it should adapt the pattern to match paths.
  * @returns {RegExp|Array} Patterns as regular expressions.
  */
-const parse = function(patterns, options) {
+const parse = function(patterns, options, path) {
 	// Validate arguments.
 	assert(typeof(patterns) === `string` || (Array.isArray(patterns) && patterns.length > 0 && typeof(patterns[0] === `string`)), `planckmatch.parse: patterns must be of type string or an array of strings.`);
 	validateOptions(options);
+	if (path) {
+		assert(typeof(path) === `boolean`, `planckmatch.parse: path must be of type boolean.`);
+	}
 	
 	// Check if array.
 	if (Array.isArray(patterns)) {
 		// Iterate over patterns.
 		const result = [];
 		for (let i = 0, length = patterns.length; i < length; i++) {
-			result.push(toRegExp(patterns[i], options));
+			result.push(toRegExp(patterns[i], options, path));
 		}
 		return result;
 	}
 	
 	// Return as expression.
-	return toRegExp(patterns, options);
+	return toRegExp(patterns, options, path);
 };
 
 module.exports = parse;

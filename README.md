@@ -23,7 +23,7 @@ $ npm install planckmatch
 
 ## Functions
 
-**planckmatch(value, patterns, options)**
+**planckmatch(value, patterns, options, path)**
 
 Matches extended glob patterns with a given value.
 
@@ -38,11 +38,11 @@ Returns: `Boolean` or `Array of Booleans`
 * `options`: [Options](#options) for conversion of glob pattern to regular expression.
   * Type: `Object`
   * Default: `{}`
-* `isWindows`: Whether the value uses Windows style back slashes (`\`) and needs to be converted to Unix style forward slashes (`/`).
+* `path`: Whether to use platform specific path separators in the expression. For instance when set to true, `path/to/file` will be treated as `path/to/file` on Unix and as `path\\to\\file` on Windows.
   * Type: `Boolean`
   * Default: `false`
 
-**planckmatch.parse(patterns, options)**
+**planckmatch.parse(patterns, options, path)**
 
 Parses extended glob patterns into regular expressions.
 
@@ -54,6 +54,9 @@ Returns: `RegExp` or `Array of RegExps`
 * `options`: [Options](#options) for conversion of glob pattern to regular expression.
   * Type: `Object`
   * Default: `{}`
+* `path`: Whether to use platform specific path separators in the expression. For instance when set to true, `path/to/file` will be treated as `path/to/file` on Unix and as `path\\to\\file` on Windows.
+  * Type: `Boolean`
+  * Default: `false`
 
 **planckmatch.match(value, expressions)**
 
@@ -67,9 +70,6 @@ Returns: `Boolean` or `Array of Booleans`
 * `expressions`: A RegExp or array of RegExp used to match with.
   * Type: `RegExp` or `Array of RegExps`
   * Required: `true`
-* `isWindows`: Whether the value uses Windows style back slashes (`\`) and needs to be converted to Unix style forward slashes (`/`).
-  * Type: `Boolean`
-  * Default: `undefined`
 
 ## Options
 
