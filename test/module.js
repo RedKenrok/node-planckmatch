@@ -126,10 +126,11 @@ test(`parse`, function(t) {
 	t.deepEqual(parse(PATTERN_DOUBLE, GLOBSTAR_TRUE, false), EXPRESSION_DOUBLE_GLOBSTAR);
 	t.notDeepEqual(parse(PATTERN_DOUBLE, GLOBSTAR_TRUE, false), EXPRESSION_DOUBLE_WINDOWS);
 	
-	t.notDeepEqual(parse(PATTERN_DOUBLE, GLOBSTAR_TRUE, true), EXPRESSION_DOUBLE_GLOBSTAR);
 	if (process.platform === `win32`) {
+		t.notDeepEqual(parse(PATTERN_DOUBLE, GLOBSTAR_TRUE, true), EXPRESSION_DOUBLE_GLOBSTAR);
 		t.deepEqual(parse(PATTERN_DOUBLE, GLOBSTAR_TRUE, true), EXPRESSION_DOUBLE_WINDOWS);
 	} else {
+		t.deepEqual(parse(PATTERN_DOUBLE, GLOBSTAR_TRUE, true), EXPRESSION_DOUBLE_GLOBSTAR);
 		t.notDeepEqual(parse(PATTERN_DOUBLE, GLOBSTAR_TRUE, true), EXPRESSION_DOUBLE_WINDOWS);
 	}
 });
