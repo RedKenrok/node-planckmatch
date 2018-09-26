@@ -64,3 +64,14 @@ test(`option:extended match:{}`, function(t) {
 	t.false(planckmatch(`abc`, `abc{.def,.ghi}`), `Don't match character with default options`);
 	t.false(planckmatch(`abc`, `abc{.ghi,.jkl}`, options), `Don't match extension`);
 });
+
+test(`option:extended match:()`, function(t) {
+	const options = {
+		extended: true
+	};
+	
+	t.false(planckmatch(`abc`, `!(abc)`, options), `Don't match word.`);
+	t.true(planckmatch(`def`, `!(abc)`, options), `Match different word.`);
+	t.false(planckmatch(`abc`, `!(*)`, options), `Don't match any word.`);
+	t.false(planckmatch(`abc/def`, `!(*)`, options), `Don't match any path.`);
+});

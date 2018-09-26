@@ -86,7 +86,7 @@ const toRegExp = function(pattern, { extended = false, flags = ``, globstar = fa
 					if (type === `@`) {
 						expression += `{1}`;
 					} else if (type === `!`) {
-						expression += path ? WILDCARD_PATH : WILDCARD;
+						expression += `([^\\/]*)`;
 					} else {
 						expression += type;
 					}
