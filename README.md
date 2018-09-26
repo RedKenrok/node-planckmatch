@@ -95,8 +95,8 @@ The most basic example using a single path and pattern.
 ```JavaScript
 const planckmatch = require(`planckmatch`);
 
-planckmatch(`path/to/file.css`, `**/*.css`, { globstar: true }); // true
-planckmatch(`path/to/file.css`, `**/*.js`, { globstar: true }); // false
+planckmatch(`path/to/file.css`, `**/*.css`); // true
+planckmatch(`path/to/file.css`, `**/*.js`); // false
 ```
 
 **Multiple patterns**
@@ -107,9 +107,9 @@ The pattern can also be an array, therefor the returned results will also be an 
 const planckmatch = require(`planckmatch`);
 
 planckmatch(`path/to/file.css`, [
-  `**/*.css`,
-  `**/*.js`
-], { globstar: true }); // [ true, false ]
+  `*.css`,
+  `*.js`
+]); // [ true, false ]
 ```
 
 **Re-use patterns**
@@ -119,7 +119,7 @@ If you re-use patterns I highly recommend parsing the patterns and matching the 
 ```JavaScript
 const planckmatch = require(`planckmatch`);
 
-const expression = planckmatch.parse(`**/*.css`, { globstar: true });
+const expression = planckmatch.parse(`*.css`);
 
 planckmatch.match(`path/to/file.css`, expression); // true
 planckmatch.match(`path/to/file.js`, expression); // false
@@ -133,19 +133,19 @@ Check if any pattern matches.
 const planckmatch = require(`planckmatch`);
 
 planckmatch(`path/to/file.css`, [
-  `path/*.css`,
+  `*.html`,
   `to/*`
-], { globstar: true }).includes(true); // false, since no pattern matches.
+]).includes(true); // false, since no pattern matches.
 
 planckmatch(`path/to/file.css`, [
-  `path/*.css`,
-  `**/to/*`
-], { globstar: true }).includes(true); // true, since the second pattern matches.
+  `*.css`,
+  `to/*`
+]).includes(true); // true, since the first pattern matches.
 
 planckmatch(`path/to/file.css`, [
-  `**/*.css`,
-  `**/to/**/*`
-], { globstar: true }).includes(true); // true, since both patterns match.
+  `*.css`,
+  `*/to/*`
+]).includes(true); // true, since both patterns match.
 ```
 
 **Match all**
@@ -156,14 +156,14 @@ Check if all patterns match.
 const planckmatch = require(`planckmatch`);
 
 !planckmatch(`path/to/file.css`, [
-  `path/*.css`,
-  `**/to/**/*`
-], { globstar: true }).includes(false); // false, since `path/*.css` does not match.
+  `*.html`,
+  `*/to/*`
+]).includes(false); // false, since `path/*.css` does not match.
 
 !planckmatch(`path/to/file.css`, [
-  `**/*.css`,
-  `**/to/**/*`
-], { globstar: true }).includes(false); // true, since all patterns match.
+  `*.css`,
+  `*/to/*`
+]).includes(false); // true, since all patterns match.
 ```
 
 **Filter array**

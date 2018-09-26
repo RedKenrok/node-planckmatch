@@ -4,19 +4,19 @@ const test = require(`ava`);
 const planckmatch = require(`../library`);
 
 test(`basic`, function(t) {
-	t.true(planckmatch(`path/to/file.css`, `**/*.css`, { globstar: true }));
-	t.false(planckmatch(`path/to/file.js`, `**/*.css`, { globstar: true }));
+	t.true(planckmatch(`path/to/file.css`, `*.css`));
+	t.false(planckmatch(`path/to/file.js`, `*.css`));
 });
 
 test(`multiple patterns`, function(t) {
 	t.deepEqual(planckmatch(`path/to/file.css`, [
-		`**/*.css`,
-		`**/*.js`
-	], { globstar: true }), [ true, false ]);
+		`*.css`,
+		`*.js`
+	]), [ true, false ]);
 });
 
 test(`re-use patterns`, function(t) {
-	const expression = planckmatch.parse(`**/*.css`, { globstar: true });
+	const expression = planckmatch.parse(`*.css`);
 	
 	t.true(planckmatch.match(`path/to/file.css`, expression));
 	t.false(planckmatch.match(`path/to/file.js`, expression));
@@ -24,31 +24,31 @@ test(`re-use patterns`, function(t) {
 
 test(`match any`, function(t) {
 	t.false(planckmatch(`path/to/file.css`, [
-		`path/*.css`,
+		`*.html`,
 		`to/*`
-	], { globstar: true }).includes(true));
+	]).includes(true));
 	
 	t.true(planckmatch(`path/to/file.css`, [
-		`path/*.css`,
-		`**/to/*`
-	], { globstar: true }).includes(true));
+		`*.css`,
+		`to/*`
+	]).includes(true));
 	
 	t.true(planckmatch(`path/to/file.css`, [
-		`**/*.css`,
-		`**/to/**/*`
-	], { globstar: true }).includes(true));
+		`*.css`,
+		`*/to/*`
+	]).includes(true));
 });
 
 test(`match all`, function(t) {
 	t.false(!planckmatch(`path/to/file.css`, [
-		`path/*.css`,
-		`**/to/**/*`
-	], { globstar: true }).includes(false));
+		`*.html`,
+		`*/to/*`
+	]).includes(false));
 	
 	t.true(!planckmatch(`path/to/file.css`, [
-		`**/*.css`,
-		`**/to/**/*`
-	], { globstar: true }).includes(false));
+		`*.css`,
+		`*/to/*`
+	]).includes(false));
 });
 
 test(`filter array`, function(t) {
