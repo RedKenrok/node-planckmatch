@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.1.2 (2018-10-17)
+### Changed
+- Optimization of `parse` and `match` functions by removing assertions.
+
 ## 0.1.1 (2018-09-26)
 ### Fixed
 - Issue where the `!` would not negate properly when `extended` set to `true`.

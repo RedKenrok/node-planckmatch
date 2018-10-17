@@ -1,5 +1,4 @@
 // Node modules.
-const assert = require(`assert`);
 const isWin = process.platform === `win32`;
 const SEP = isWin ? `\\\\` : `/`;
 // Regular expression segments.
@@ -7,30 +6,6 @@ const GLOBSTAR = `((?:[^/]*(?:/|$))*)`,
 	WILDCARD = `([^/]*)`;
 const GLOBSTAR_PATH = `((?:[^${SEP}]*(?:${SEP}|$))*)`,
 	WILDCARD_PATH = `([^${SEP}]*)`;
-
-/**
- * Validate the given options types.
- * @param {Object} options Glob pattern to regular expression options.
- */
-const validateOptions = function(options) {
-	if (!options) {
-		return;
-	}
-	assert(typeof(options) === `object`, `planckmatch: options must be of type object.`);
-	
-	if (options.extended) {
-		assert(typeof(options.extended) === `boolean`, `planckmatch: options.extended must be of type boolean.`);
-	}
-	if (options.flags) {
-		assert(typeof(options.flags) === `string`, `planckmatch: options.flags must be of type string.`);
-	}
-	if (options.globstar) {
-		assert(typeof(options.globstar) === `boolean`, `planckmatch: options.globstar must be of type boolean.`);
-	}
-	if (options.strict) {
-		assert(typeof(options.strict) === `boolean`, `planckmatch: options.strict must be of type boolean.`);
-	}
-};
 
 /**
  * Converts glob pattern into a regular expression.
@@ -251,13 +226,6 @@ const toRegExp = function(pattern, { extended = false, flags = ``, globstar = fa
  * @returns {RegExp|Array} Patterns as regular expressions.
  */
 const parse = function(patterns, options, path) {
-	// Validate arguments.
-	assert(typeof(patterns) === `string` || (Array.isArray(patterns) && patterns.length > 0 && typeof(patterns[0] === `string`)), `planckmatch.parse: patterns must be of type string or an array of strings.`);
-	validateOptions(options);
-	if (path) {
-		assert(typeof(path) === `boolean`, `planckmatch.parse: path must be of type boolean.`);
-	}
-	
 	// Check if array.
 	if (Array.isArray(patterns)) {
 		// Iterate over patterns.
