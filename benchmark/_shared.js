@@ -13,16 +13,16 @@ const options = {
 	iterationCount: 1e3
 };
 // Set default pattern.
-options.pattern = options.patterns[0];
+options.pattern = options.patterns[1];
 // Construct all file paths.
 for (let i = 0; i < options.fileCount; i++) {
-	options.filePaths.push(`${i}.css`);
+	options.filePaths.push(`${i}.html`);
 }
 
 // Export shared data.
 module.exports = {
-	before: function(message) {
-		console.log(`\nPlanckmatch benchmark runs a ${options.iterationCount} times on a ${options.fileCount} file paths using the glob patterns: ${options.patterns.join(`, `)}.`);
+	before: function(message, patterns = options.patterns) {
+		console.log(`\nPlanckmatch benchmark runs a ${options.iterationCount} times on a ${options.fileCount} file paths using the glob patterns: ${patterns.join(`, `)}.`);
 		if (message) {
 			console.log(message);
 		}

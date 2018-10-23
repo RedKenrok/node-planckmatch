@@ -24,8 +24,13 @@ const EXPRESSION_SINGLE = /^path\/.*$/,
 const EXPRESSION_DOUBLE = /^path\/.*$/,
 	EXPRESSION_DOUBLE_GLOBSTAR = /^path\/((?:[^/]*(?:\/|$))*)$/;
 const EXPRESSION_DOUBLE_WINDOWS = /^path\\((?:[^\\]*(?:\\|$))*)$/;
+// Match all and any.
+const PATTERN_TRUE_A = `path/*`,
+	PATTERN_TRUE_B = `path/to/*`;
+const PATTERN_FALSE_A = `to/*`,
+	PATTERN_FALSE_B = `to/path/*`;
 
-test(`index`, function(t) {
+test(`planckmatch`, function(t) {
 	// Module properties and types.
 	t.is(typeof(planckmatch), `function`);
 	t.is(planckmatch.parse, parse);
@@ -82,9 +87,10 @@ test(`index`, function(t) {
 	}
 });
 
-test(`parse`, function(t) {
+test(`planckmatch.parse`, function(t) {
 	// Type.
 	t.is(typeof(parse), `function`);
+	t.deepEqual(planckmatch.parse, parse);
 	
 	// Patterns as a string.
 	t.deepEqual(parse(PATTERN_FILE), EXPRESSION_FILE);
@@ -135,9 +141,10 @@ test(`parse`, function(t) {
 	}
 });
 
-test(`match`, function(t) {
+test(`planckmatch.match`, function(t) {
 	// Type.
 	t.is(typeof(match), `function`);
+	t.deepEqual(planckmatch.match, match);
 	
 	// Expressions as RegExp.
 	t.true(match(FILE_PATH_CSS, EXPRESSION_FILE));
@@ -170,4 +177,34 @@ test(`match`, function(t) {
 	
 	t.false(match(FILE_PATH_CSS_WINDOWS, EXPRESSION_DOUBLE));
 	t.true(match(FILE_PATH_CSS_WINDOWS, EXPRESSION_DOUBLE_WINDOWS));
+});
+
+test(`planckmatch.all`, function(t) {
+	// Type.
+	t.is(typeof(match.all), `function`);
+	
+	// Single.
+	t.true(planckmatch.all(FILE_PATH_CSS, PATTERN_TRUE_A));
+	t.false(planckmatch.all(FILE_PATH_CSS, PATTERN_FALSE_A));
+	
+	// Array.
+	t.true(planckmatch.all(FILE_PATH_CSS, [ PATTERN_TRUE_A, PATTERN_TRUE_B ]));
+	t.false(planckmatch.all(FILE_PATH_CSS, [ PATTERN_FALSE_A, PATTERN_TRUE_B ]));
+	t.false(planckmatch.all(FILE_PATH_CSS, [ PATTERN_TRUE_A, PATTERN_FALSE_B ]));
+	t.false(planckmatch.all(FILE_PATH_CSS, [ PATTERN_FALSE_A, PATTERN_FALSE_B ]));
+});
+
+test(`planckmatch.any`, function(t) {
+	// Type.
+	t.is(typeof(match.any), `function`);
+	
+	// Single.
+	t.true(planckmatch.any(FILE_PATH_CSS, PATTERN_TRUE_A));
+	t.false(planckmatch.any(FILE_PATH_CSS, PATTERN_FALSE_A));
+	
+	// Array.
+	t.true(planckmatch.any(FILE_PATH_CSS, [ PATTERN_TRUE_A, PATTERN_TRUE_B ]));
+	t.true(planckmatch.any(FILE_PATH_CSS, [ PATTERN_FALSE_A, PATTERN_TRUE_B ]));
+	t.true(planckmatch.any(FILE_PATH_CSS, [ PATTERN_TRUE_A, PATTERN_FALSE_B ]));
+	t.false(planckmatch.any(FILE_PATH_CSS, [ PATTERN_FALSE_A, PATTERN_FALSE_B ]));
 });

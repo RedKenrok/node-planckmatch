@@ -42,6 +42,18 @@ Returns: `Boolean` or `Array of Booleans`
   * Type: `Boolean`
   * Default: `false`
 
+**planckmatch.all(value, patterns, options, path)**
+
+Same as `planckmatch(value, patterns, options, path)` except it always returns a single boolean with whether all of the patterns matched.
+
+Returns: `Boolean`
+
+**planckmatch.any(value, patterns, options, path)**
+
+Same as `planckmatch(value, patterns, options, path)` except it always returns a single boolean with whether any of the patterns matched.
+
+Returns: `Boolean`
+
 **planckmatch.parse(patterns, options, path)**
 
 Parses extended glob patterns into regular expressions.
@@ -70,6 +82,18 @@ Returns: `Boolean` or `Array of Booleans`
 * `expressions`: A RegExp or array of RegExp used to match with.
   * Type: `RegExp` or `Array of RegExps`
   * Required: `true`
+
+**planckmatch.match.all(value, expressions)**
+
+Same as `planckmatch.match(value, expressions)` except it always returns a single boolean with whether all of the patterns matched.
+
+Returns: `Boolean`
+
+**planckmatch.match.any(value, expressions)**
+
+Same as `planckmatch.match(value, expressions)` except it always returns a single boolean with whether any of the patterns matched.
+
+Returns: `Boolean`
 
 ## Options
 
@@ -125,29 +149,6 @@ planckmatch.match(`path/to/file.css`, expression); // true
 planckmatch.match(`path/to/file.js`, expression); // false
 ```
 
-**Match any**
-
-Check if any pattern matches.
-
-```JavaScript
-const planckmatch = require(`planckmatch`);
-
-planckmatch(`path/to/file.css`, [
-  `*.html`,
-  `to/*`
-]).includes(true); // false, since no pattern matches.
-
-planckmatch(`path/to/file.css`, [
-  `*.css`,
-  `to/*`
-]).includes(true); // true, since the first pattern matches.
-
-planckmatch(`path/to/file.css`, [
-  `*.css`,
-  `*/to/*`
-]).includes(true); // true, since both patterns match.
-```
-
 **Match all**
 
 Check if all patterns match.
@@ -155,15 +156,20 @@ Check if all patterns match.
 ```JavaScript
 const planckmatch = require(`planckmatch`);
 
-!planckmatch(`path/to/file.css`, [
-  `*.html`,
-  `*/to/*`
-]).includes(false); // false, since `path/*.css` does not match.
+planckmatch.all(`path/to/file.css`, [ `*.html`, `*/to/*` ]); // false, since `*.html` does not match.
+planckmatch.all(`path/to/file.css`, [ `*.css`, `*/to/*` ]); // true, since all patterns match.
+```
 
-!planckmatch(`path/to/file.css`, [
-  `*.css`,
-  `*/to/*`
-]).includes(false); // true, since all patterns match.
+**Match any**
+
+Check if any pattern matches.
+
+```JavaScript
+const planckmatch = require(`planckmatch`);
+
+planckmatch.any(`path/to/file.css`, [ `*.html`, `to/*` ]); // false, since no pattern matches.
+planckmatch.any(`path/to/file.css`, [ `*.css`, `to/*` ]); // true, since the first pattern matches.
+planckmatch.any(`path/to/file.css`, [ `*.css`, `*/to/*` ]); // true, since both patterns match.
 ```
 
 **Filter array**
@@ -180,12 +186,12 @@ let expressions = planckmatch.parse([
 
 // Match all.
 [ `a.css`, `b.html`, `c.js` ].filter(function(value) {
-  return !planckmatch.match(value, expressions).includes(false);
+  return planckmatch.match.all(value, expressions);
 }); // []
 
 // Match any.
 [ `a.css`, `b.html`, `c.js` ].filter(function(value) {
-  return planckmatch.match(value, expressions).includes(true);
+  return planckmatch.match.any(value, expressions);
 }); // [ `a.css`, `b.html` ]
 
 // Filter out any '.css' files.
@@ -195,7 +201,7 @@ expressions = planckmatch.parse([
 ], { extended: true });
 
 [ `a.css`, `b.html`, `c.js` ].filter(function(value) {
-  return !planckmatch.match(value, expressions).includes(false);
+  return planckmatch.match.all(value, expressions);
 }); // [ `b.html`, `c.js` ]
 ```
 

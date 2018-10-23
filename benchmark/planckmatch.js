@@ -2,11 +2,7 @@
 const planckmatch = require(`../library`);
 // Get shared functions.
 const { before, beforeEach, afterEach, options } = require(`./_shared`);
-const fileCount = options.fileCount,
-	filePaths = options.filePaths,
-	iterationCount = options.iterationCount,
-	pattern = options.pattern,
-	patterns = options.patterns;
+const { fileCount, filePaths, iterationCount, pattern, patterns } = options;
 
 // Run before benchmark.
 before(`The following benchmark only uses the planckmatch(value, patterns) function which is only recommended when using a set of patterns once.`);

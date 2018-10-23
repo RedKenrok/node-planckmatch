@@ -22,33 +22,15 @@ test(`re-use patterns`, function(t) {
 	t.false(planckmatch.match(`path/to/file.js`, expression));
 });
 
-test(`match any`, function(t) {
-	t.false(planckmatch(`path/to/file.css`, [
-		`*.html`,
-		`to/*`
-	]).includes(true));
-	
-	t.true(planckmatch(`path/to/file.css`, [
-		`*.css`,
-		`to/*`
-	]).includes(true));
-	
-	t.true(planckmatch(`path/to/file.css`, [
-		`*.css`,
-		`*/to/*`
-	]).includes(true));
+test(`match all`, function(t) {
+	t.false(planckmatch.all(`path/to/file.css`, [ `*.html`, `*/to/*` ]));
+	t.true(planckmatch.all(`path/to/file.css`, [ `*.css`, `*/to/*` ]));
 });
 
-test(`match all`, function(t) {
-	t.false(!planckmatch(`path/to/file.css`, [
-		`*.html`,
-		`*/to/*`
-	]).includes(false));
-	
-	t.true(!planckmatch(`path/to/file.css`, [
-		`*.css`,
-		`*/to/*`
-	]).includes(false));
+test(`match any`, function(t) {
+	t.false(planckmatch.any(`path/to/file.css`, [ `*.html`, `to/*` ]));
+	t.true(planckmatch.any(`path/to/file.css`, [ `*.css`, `to/*` ]));
+	t.true(planckmatch.any(`path/to/file.css`, [ `*.css`, `*/to/*` ]));
 });
 
 test(`filter array`, function(t) {
@@ -58,11 +40,11 @@ test(`filter array`, function(t) {
 	]);
 	
 	t.deepEqual([ `a.css`, `b.html`, `c.js` ].filter(function(value) {
-		return !planckmatch.match(value, expressions).includes(false);
+		return planckmatch.match.all(value, expressions);
 	}), []);
 	
 	t.deepEqual([ `a.css`, `b.html`, `c.js` ].filter(function(value) {
-		return planckmatch.match(value, expressions).includes(true);
+		return planckmatch.match.any(value, expressions);
 	}), [ `a.css`, `b.html` ]);
 	
 	expressions = planckmatch.parse([
@@ -71,6 +53,6 @@ test(`filter array`, function(t) {
 	], { extended: true });
 	
 	t.deepEqual([ `a.css`, `b.html`, `c.js` ].filter(function(value) {
-		return !planckmatch.match(value, expressions).includes(false);
+		return planckmatch.match.all(value, expressions);
 	}), [ `b.html`, `c.js` ]);
 });

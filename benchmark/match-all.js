@@ -3,14 +3,10 @@ const parse = require(`../library/parse`);
 const match = require(`../library/match`);
 // Get shared functions.
 const { before, beforeEach, afterEach, options } = require(`./_shared`);
-const fileCount = options.fileCount,
-	filePaths = options.filePaths,
-	iterationCount = options.iterationCount,
-	pattern = options.pattern,
-	patterns = options.patterns;
+const { fileCount, filePaths, iterationCount, pattern, patterns } = options;
 
 // Run before benchmark.
-before(`The following benchmark first parses the glob patterns to regular expression using planckmatch.parse(patterns) then loops through each file and calls planckmatch.match(value, expressions) to match the value to the parsed patterns.`);
+before(`The following benchmark first parses the glob patterns to regular expression using planckmatch.parse(patterns) then loops through each file and calls planckmatch.match.all(value, expressions) to match the value to the parsed patterns.`);
 
 // High resolution time.
 let time;
@@ -22,7 +18,7 @@ time = process.hrtime();
 for (let i = 0; i < iterationCount; i++) {
 	expressions = parse(pattern);
 	for (let j = 0; j < fileCount; j++) {
-		match(filePaths[j], expressions);
+		match.all(filePaths[j], expressions);
 	}
 }
 afterEach(process.hrtime(time));
@@ -35,7 +31,7 @@ time = process.hrtime();
 for (let i = 0; i < iterationCount; i++) {
 	expressions = parse(patterns);
 	for (let j = 0; j < fileCount; j++) {
-		match(filePaths[j], expressions);
+		match.all(filePaths[j], expressions);
 	}
 }
 afterEach(process.hrtime(time));

@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.2.0 (2018-10-22)
+### Added
+- `match.all` and `match.any` as well as `planckmatch.all` and `planckmatch.any` added to allow for further optimization.
+
 ## 0.1.2 (2018-10-17)
 ### Changed
 - Optimization of `parse` and `match` functions by removing assertions.
