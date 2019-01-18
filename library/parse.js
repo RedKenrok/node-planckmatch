@@ -15,10 +15,10 @@ const GLOBSTAR_PATH = `((?:[^${SEP}]*(?:${SEP}|$))*)`,
  * @param {String} options.flags Any regular expressions flags.
  * @param {Boolean} options.globstar Whether to accept multiple glob stars.
  * @param {Boolean} options.strict Whether to be strict on forwards slashes.
- * @param {Boolean} path Whether it should adapt the pattern to match paths.
+ * @param {Boolean} isPath Whether it should adapt the pattern to match paths.
  * @returns {RegExp} Pattern as regular expressions.
  */
-const toRegExp = function(pattern, { extended = false, flags = ``, globstar = false, strict = false } = {}, path = false) {
+const toRegExp = function(pattern, { extended = false, flags = ``, globstar = false, strict = false } = {}, isPath = false) {
 	// Empty expression to concatenate onto.
 	let expression = ``;
 	
@@ -97,7 +97,7 @@ const toRegExp = function(pattern, { extended = false, flags = ``, globstar = fa
 				continue;
 			
 			case `/`:
-				expression += path && isWin ? SEP : `\\${c}`;
+				expression += isPath && isWin ? SEP : `\\${c}`;
 				if (n === `/` && !strict) {
 					expression += `?`;
 				}
@@ -192,11 +192,11 @@ const toRegExp = function(pattern, { extended = false, flags = ``, globstar = fa
 					// Count as a single asterisks.
 					expression += `.*`;
 				} else if (starCount > 1 && (p === undefined || p === `/` || p === `\\`) && (n === undefined || n === `/` || n === `\\`)) {
-					expression += path ? GLOBSTAR_PATH : GLOBSTAR;
+					expression += isPath ? GLOBSTAR_PATH : GLOBSTAR;
 					// Skip the next forwards slash.
 					i++;
 				} else {
-					expression += path ? WILDCARD_PATH : WILDCARD;
+					expression += isPath ? WILDCARD_PATH : WILDCARD;
 				}
 				continue;
 		}
@@ -225,19 +225,19 @@ const toRegExp = function(pattern, { extended = false, flags = ``, globstar = fa
  * @param {Boolean} path Whether it should adapt the pattern to match paths.
  * @returns {RegExp|Array} Patterns as regular expressions.
  */
-const parse = function(patterns, options, path) {
+const parse = function(patterns, options, isPath) {
 	// Check if array.
 	if (Array.isArray(patterns)) {
 		// Iterate over patterns.
 		const result = [];
 		for (let i = 0, length = patterns.length; i < length; i++) {
-			result.push(toRegExp(patterns[i], options, path));
+			result.push(toRegExp(patterns[i], options, isPath));
 		}
 		return result;
 	}
 	
 	// Return as expression.
-	return toRegExp(patterns, options, path);
+	return toRegExp(patterns, options, isPath);
 };
 
 module.exports = parse;
