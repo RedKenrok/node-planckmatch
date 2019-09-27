@@ -204,7 +204,3 @@ expressions = planckmatch.parse([
   return planckmatch.match.all(value, expressions);
 }); // [ `b.html`, `c.js` ]
 ```
-
-## License
-
-[ISC license](https://github.com/redkenrok/planckmatch/blob/LICENSE)
