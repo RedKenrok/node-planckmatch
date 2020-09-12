@@ -1,1 +1,1 @@
-module.exports = require(`./library/parse`);
+module.exports = require('./library/parse')

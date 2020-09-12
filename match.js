@@ -1,1 +1,1 @@
-module.exports = require(`./library/match`);
+module.exports = require('./library/match')
